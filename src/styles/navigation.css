@@ -1,0 +1,7 @@
+.mobile-menu {
+    transform: translateX(100%);
+}
+
+.mobile-menu-open {
+    transform: translateX(0);
+}
