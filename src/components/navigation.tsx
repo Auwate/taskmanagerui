@@ -4,6 +4,7 @@ import "../styles/navigation.css"
 
 import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Navbar() {
 
@@ -18,13 +19,13 @@ export default function Navbar() {
         <div className="w-full h-px bg-[#0084ff]"></div>
         <nav className="flex flex-row item-center justify-between p-4 bg-white shadow-md mx-16 text-lg">
             <ul className="hidden md:flex space-x-16 items-center">
-                <li><a className="link" href="/">Task Manager</a></li>
-                <li><a className="link" href="/faq">FAQ</a></li>
-                <li><a className="link" href="/contact">Contact</a></li>
+                <li><Link className="link" href="/">Task Manager</Link></li>
+                <li><Link className="link" href="/faq">FAQ</Link></li>
+                <li><Link className="link" href="/contact">Contact</Link></li>
             </ul>
             <ul className="hidden md:flex space-x-16">
-                <li><a className="btn-secondary w-[8vw]" href="/tasks">Tasks</a></li>
-                <li><a className="btn-primary w-[8vw]" href="/auth/login">Log in</a></li>
+                <li><Link className="btn-secondary w-[8vw]" href="/tasks">Tasks</Link></li>
+                <li><Link className="btn-primary w-[8vw]" href="/auth/login">Log in</Link></li>
             </ul>
 
             <div className="flex items-center space-x-4 md:hidden">
@@ -32,7 +33,7 @@ export default function Navbar() {
                     <RxCross1 size={32} className="z-1" onClick={onClick}></RxCross1> :
                     <RxHamburgerMenu size={32} className="z-1" onClick={onClick}></RxHamburgerMenu>
                 }
-                <a href="/">Task Manager</a>
+                <Link href="/">Task Manager</Link>
             </div>
             <div className={
                 `flex
@@ -56,10 +57,10 @@ export default function Navbar() {
                     transition-all ease-in-out duration-300
                     ${isOpen ? `mobile-menu-open` : `mobile-menu`}`
                 }>
-                    <li><a className="block link" href="/">Home</a></li>
-                    <li><a className="block link" href="/faq">FAQ</a></li>
-                    <li><a className="block link" href="/tasks">Tasks</a></li>
-                    <li><a className="block link" href="/auth/login">Log in</a></li>
+                    <li><Link className="block link" href="/">Home</Link></li>
+                    <li><Link className="block link" href="/faq">FAQ</Link></li>
+                    <li><Link className="block link" href="/tasks">Tasks</Link></li>
+                    <li><Link className="block link" href="/auth/login">Log in</Link></li>
                 </ul>
             </div>
         </nav>

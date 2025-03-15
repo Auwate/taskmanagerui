@@ -1,6 +1,7 @@
 import "../styles/home.css"
 import "../styles/global.css"
 import Image from "next/image"
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -9,8 +10,8 @@ export default function Home() {
         <h1 className="text-4xl mb-8 fadeIn">Cloud-native task management. 100% free.</h1>
         <p className="text-xl mb-16 mx-32 fadeIn">Coordinate and manage your necessities with a cloud hosted task manager. Built with security and scalability in mind, it leverages microservice architecture with development, testing, and deployment built in.</p>
         <div className="flex space-x-16">
-          <a href="/tasks" className="block btn-primary w-[8vw]">Get started.</a>
-          <a href="#description" className="block btn-secondary w-[12vw]">How does this work?</a>
+          <Link href="/tasks" className="block btn-primary w-[8vw]">Get started.</Link>
+          <Link href="#description" className="block btn-secondary w-[12vw]">How does this work?</Link>
         </div>
       </section>
       <section className="flex flex-col justify-center items-center mt-48" id="description">
