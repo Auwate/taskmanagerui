@@ -20,8 +20,8 @@
     display: flex;
     justify-content: center;
     background-color: rgb(255, 255, 255);
-    color: rgb(0, 132, 255);
-    border: 1px rgb(0, 132, 255) solid;
+    color: rgb(33, 77, 255);
+    border: 1px rgb(33, 77, 255) solid;
     border-radius: 2rem;
     padding: 16px;
     transition: all 150ms ease-in-out;
@@ -29,7 +29,7 @@
 
 .btn-secondary:hover {
     color: white;
-    background-color: rgb(0, 132, 255);
+    background-color: rgb(33, 77, 255);
 }
 
 .link {
@@ -38,4 +38,41 @@
 
 .link:hover {
     color: rgb(109, 109, 109);
+}
+
+.blur {
+    filter: blur(20px);
+}
+
+@keyframes bubbleAnimation {
+    0% {
+        transform: scale(100%, 100%);
+    }
+    50% {
+        transform: scale(70%, 70%);
+    }
+    100% {
+        transform: scale(100%, 100%);
+    }
+}
+
+.bubble {
+    animation: bubbleAnimation 25s ease-in-out infinite;
+    border-radius: 100%;
+    background-color: rgb(33, 77, 255);
+    z-index: -1;
+}
+
+.normalBubble {
+    min-width: 400px;
+    min-height: 400px;
+    max-width: 400px;
+    min-height: 400px;
+}
+
+.largeBubble {
+    min-width: 700px;
+    min-height: 700px;
+    max-width: 700px;
+    min-height: 700px;
 }

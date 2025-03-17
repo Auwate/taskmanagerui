@@ -12,20 +12,21 @@ export default function Navbar() {
 
     function onClick (): void {
         setIsOpen(() => !isOpen)
+        document.getElementById("main")?.classList.toggle("blur")
     }
 
     return (
     <>
-        <div className="w-full h-px bg-[#0084ff]"></div>
-        <nav className="flex flex-row item-center justify-between p-4 bg-white shadow-md mx-16 text-lg">
+        <div className="w-full h-px bg-[#214dff]"></div>
+        <nav id="top" className="flex flex-row item-center justify-between p-4 bg-white mx-8 text-lg mb-[14%]">
             <ul className="hidden md:flex space-x-16 items-center">
                 <li><Link className="link" href="/">Task Manager</Link></li>
                 <li><Link className="link" href="/faq">FAQ</Link></li>
                 <li><Link className="link" href="/contact">Contact</Link></li>
             </ul>
             <ul className="hidden md:flex space-x-16">
-                <li><Link className="btn-secondary w-[8vw]" href="/tasks">Tasks</Link></li>
-                <li><Link className="btn-primary w-[8vw]" href="/auth/login">Log in</Link></li>
+                <li><Link className="btn-secondary w-[13vw]" href="/tasks">Tasks</Link></li>
+                <li><Link className="btn-primary w-[13vw]" href="/auth/login">Log in</Link></li>
             </ul>
 
             <div className="flex items-center space-x-4 md:hidden">
@@ -38,13 +39,11 @@ export default function Navbar() {
             <div className={
                 `flex
                 md:hidden
-                fixed
-                h-full
-                w-full
-                top-0
-                left-0
-                right-0
-                bottom-0`
+                absolute
+                h-[200px]
+                w-[200px]
+                top-17
+                left-0`
             }>
                 <ul className={
                     `flex
@@ -55,12 +54,13 @@ export default function Navbar() {
                     h-full
                     w-full
                     transition-all ease-in-out duration-300
+                    shadow-2xl
                     ${isOpen ? `mobile-menu-open` : `mobile-menu`}`
                 }>
-                    <li><Link className="block link" href="/">Home</Link></li>
-                    <li><Link className="block link" href="/faq">FAQ</Link></li>
-                    <li><Link className="block link" href="/tasks">Tasks</Link></li>
-                    <li><Link className="block link" href="/auth/login">Log in</Link></li>
+                    <li><Link className="block link text-xl" href="/">Home</Link></li>
+                    <li><Link className="block link text-xl" href="/faq">FAQ</Link></li>
+                    <li><Link className="block link text-xl" href="/tasks">Tasks</Link></li>
+                    <li><Link className="block link text-xl" href="/auth/login">Log in</Link></li>
                 </ul>
             </div>
         </nav>

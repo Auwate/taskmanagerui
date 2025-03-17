@@ -1,6 +1,7 @@
 import "../styles/global.css"
 
 import Navbar from "../components/navigation"
+import Footer from "@/components/footer";
 
 export default function RootLayout({
   children,
@@ -8,10 +9,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html className="scroll-smooth" lang="en">
       <body>
         <Navbar></Navbar>
         {children}
+        <Footer></Footer>
       </body>
     </html>
   );
