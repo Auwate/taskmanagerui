@@ -59,7 +59,7 @@ export default function Home() {
           ></Title>
           <div className="flex justify-center space-x-10 mt-16">
             <div className="flex flex-col w-1/3">
-              <p className="md:text-2xl text-md mb-6">Completely free, powered by Oracle and Vercel's cloud offerings. Data is automatically purged after 24 hours for sustained free access.</p>
+              <p className="md:text-2xl text-md mb-6">Completely free, powered by Oracle and Vercel&apos;s cloud offerings. Data is automatically purged after 24 hours for sustained free access.</p>
               <p className="md:text-2xl text-md mb-6">Scalable, stateless microservices (Spring Boot, Java 21, Maven, Docker) power the backend. User data is securely managed via managed Oracle SQL databases and access is controlled through JWT tokens issued by the auth microservice.</p>
               <p className="md:text-2xl text-md text-lg">Full CI/CD pipelines automate testing, building, and deployment to Docker Hub and hosted instances. Explore projects above or connect on LinkedIn for details!</p>
             </div>
