@@ -6,7 +6,7 @@ import Title from "@/components/title";
 
 export default function Home() {
   return (
-    <main id="main" className="md:mt-32 mt-24 mb-48 transition filter 200ms ease-in-out">
+    <main id="main" className="flex-grow md:mt-40 mt-30 mb-48 transition filter 200ms ease-in-out">
       <section className="mx-12 xl:mx-32 flex flex-col justify-center items-center">
         <h1 className="md:text-4xl text-3xl mb-8 fadeIn text-center">Cloud-native task management. 100% free.</h1>
         <p className="md:text-xl md:mx-16 text-md mb-16 fadeIn">Coordinate and manage your necessities with a cloud hosted task manager. Built with security and scalability in mind, it leverages microservice architecture with development, testing, and deployment built in.</p>

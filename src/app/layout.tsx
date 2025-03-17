@@ -10,7 +10,7 @@ export default function RootLayout({
 }>) {
   return (
     <html className="scroll-smooth" lang="en">
-      <body>
+      <body className="flex flex-col min-h-[100vh]">
         <Navbar></Navbar>
         {children}
         <Footer></Footer>

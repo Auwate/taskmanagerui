@@ -18,7 +18,7 @@ export default function Navbar() {
     return (
     <>
         <div className="w-full h-px bg-[#214dff]"></div>
-        <nav id="top" className="flex flex-row item-center justify-between p-4 bg-white mx-8 text-lg mb-[14%]">
+        <nav id="top" className="flex flex-row item-center justify-between p-4 mx-8 text-lg">
             <ul className="hidden md:flex space-x-16 items-center">
                 <li><Link className="link" href="/">Task Manager</Link></li>
                 <li><Link className="link" href="/faq">FAQ</Link></li>
