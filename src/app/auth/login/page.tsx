@@ -5,7 +5,7 @@ export default function Home() {
     return (
     <>
     <main className="flex flex-grow flex-col justify-center items-center relative overflow-hidden">
-        <div className="bubble largeBubble absolute z-[-1]"></div>
+        <div className="bubble largeBubble absolute z-[-1] blur"></div>
         <div className="min-w-[352px] min-h-[487px] my-20 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white">
             <div className="h-1/3">
                 <h1 className="text-3xl">Log in</h1>
