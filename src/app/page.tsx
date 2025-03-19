@@ -6,11 +6,11 @@ import Title from "@/components/title";
 
 export default function Home() {
   return (
-    <main id="main" className="flex-grow md:mt-40 mt-30 mb-48 transition filter 200ms ease-in-out">
+    <main id="main" className="flex-grow md:mt-[30vh] mt-[15vh] mb-48 transition filter 200ms ease-in-out">
       <section className="mx-12 xl:mx-32 flex flex-col justify-center items-center">
         <h1 className="md:text-4xl text-3xl mb-8 fadeIn text-center">Cloud-native task management. 100% free.</h1>
         <p className="md:text-xl md:mx-16 text-md mb-16 fadeIn">Coordinate and manage your necessities with a cloud hosted task manager. Built with security and scalability in mind, it leverages microservice architecture with development, testing, and deployment built in.</p>
-        <div className="flex md:space-x-16 space-x-2">
+        <div className="flex md:space-x-16 space-x-8">
           <Link href="/tasks" className="md:w-[200px] sm:w-[150px] w-[100px] flex items-center justify-center text-center block btn-primary">Get started.</Link>
           <Link href="#about" className="md:w-[200px] sm:w-[150px] w-[100px] flex items-center justify-center text-center block btn-secondary">How does this work?</Link>
         </div>
@@ -52,22 +52,22 @@ export default function Home() {
           </Card>
         </div>
       </section>
-      <section id="about" className="xl:px-24 p-16 pb-0 flex flex-col justify-center items-center mt-30 md:mt-64">
+      <section id="about" className="xl:px-24 py-16 pb-0 px-6 flex flex-col justify-center items-center mt-30 md:mt-64">
           <Title
             title="Fast, efficient, and cloud hosted."
             description="A whole productivity suite in one place"
           ></Title>
           <div className="flex justify-center space-x-10 mt-16">
             <div className="flex flex-col w-1/3">
-              <p className="md:text-2xl sm:text-md text-xs mb-6">Completely free, powered by Oracle and Vercel&apos;s cloud offerings. Data is automatically purged after 24 hours for sustained free access.</p>
-              <p className="md:text-2xl sm:text-md text-xs mb-6">Scalable, stateless microservices (Spring Boot, Java 21, Maven, Docker) power the backend. User data is securely managed via managed Oracle SQL databases and access is controlled through JWT tokens issued by the auth microservice.</p>
-              <p className="md:text-2xl sm:text-md text-xs text-lg">Full CI/CD pipelines automate testing, building, and deployment to Docker Hub and hosted instances. Explore projects above or connect on LinkedIn for details!</p>
+              <p className="md:text-xl sm:text-sm text-xs mb-6">Completely free, powered by Oracle and Vercel&apos;s cloud offerings. Data is automatically purged after 24 hours for sustained free access.</p>
+              <p className="md:text-xl sm:text-sm text-xs mb-6">Scalable, stateless microservices (Spring Boot, Java 21, Maven, Docker) power the backend. User data is securely managed via managed Oracle SQL databases and access is controlled through JWT tokens issued by the auth microservice.</p>
+              <p className="md:text-xl sm:text-sm text-xs text-lg">Full CI/CD pipelines automate testing, building, and deployment to Docker Hub and hosted instances. Explore projects above or connect on LinkedIn for details!</p>
             </div>
             <div className="flex flex-col items-center w-1/2">
-              <h1 className="md:text-5xl sm:text-3xl text-xl mb-8 text-center">How do I login or sign up?</h1>
-              <p className="md:text-2xl sm:text-lg text-xs mb-12">Click <strong>log in</strong>, followed by <strong>sign up</strong>, then provide a <strong>username and password</strong>. Your browser will be provided with an access token by which it can communicate with the backend. If you already have an account, click login and follow the steps provided.</p>
-              <h1 className="md:text-5xl sm:text-3xl text-xl mb-8 text-center">How do I start?</h1>
-              <p className="md:text-2xl sm:text-lg text-xs mb-12">Click the button at the header that displays <strong>tasks</strong>. Once there, the application will check that you are logged in and will provide you with <strong>your</strong> data.</p>
+              <h1 className="md:text-3xl sm:text-xl text-md mb-8 text-center">How do I login or sign up?</h1>
+              <p className="md:text-xl sm:text-md text-xs mb-12">Click <strong>log in</strong>, followed by <strong>sign up</strong>, then provide a <strong>username and password</strong>. Your browser will be provided with an access token by which it can communicate with the backend. If you already have an account, click login and follow the steps provided.</p>
+              <h1 className="md:text-3xl sm:text-xl text-md mb-8 text-center">How do I start?</h1>
+              <p className="md:text-xl sm:text-md text-xs mb-12">Click the button at the header that displays <strong>tasks</strong>. Once there, the application will check that you are logged in and will provide you with <strong>your</strong> data.</p>
             </div>
           </div>
       </section>

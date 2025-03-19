@@ -43,7 +43,8 @@ export default function Navbar() {
                 h-[200px]
                 w-[200px]
                 top-17
-                left-0`
+                left-0
+                z-[1]`
             }>
                 <ul className={
                     `flex
@@ -55,12 +56,13 @@ export default function Navbar() {
                     w-full
                     transition-all ease-in-out duration-300
                     shadow-2xl
+                    z-[1]
                     ${isOpen ? `mobile-menu-open` : `mobile-menu`}`
                 }>
-                    <li><Link className="block link text-xl" href="/">Home</Link></li>
-                    <li><Link className="block link text-xl" href="/faq">FAQ</Link></li>
-                    <li><Link className="block link text-xl" href="/tasks">Tasks</Link></li>
-                    <li><Link className="block link text-xl" href="/auth/login">Log in</Link></li>
+                    <li><Link onClick={onClick} className="block link text-xl" href="/">Home</Link></li>
+                    <li><Link onClick={onClick} className="block link text-xl" href="/faq">FAQ</Link></li>
+                    <li><Link onClick={onClick} className="block link text-xl" href="/tasks">Tasks</Link></li>
+                    <li><Link onClick={onClick} className="block link text-xl" href="/auth/login">Log in</Link></li>
                 </ul>
             </div>
         </nav>
