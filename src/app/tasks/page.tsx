@@ -1,3 +1,5 @@
+"use client";
+
 import "../../styles/login.css"
 import "../../styles/global.css"
 
