@@ -22,6 +22,7 @@ export default function Home() {
 
             } catch (error) {
 
+                console.log(error)
                 router.push("/auth/login")
 
             }
