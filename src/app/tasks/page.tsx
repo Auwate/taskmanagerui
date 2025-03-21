@@ -23,9 +23,11 @@ export default function Home() {
 
             }
 
-        }
+        };
 
-    }, [])
+        fetchTasks();
+
+    }, []);
 
     return (
     <>
