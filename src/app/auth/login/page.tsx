@@ -3,14 +3,16 @@
 import "../../../styles/login.css"
 import "../../../styles/global.css"
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const router = useRouter()
 
-    const auth = process.env.AUTH_SERVER;
+    const auth = process.env.NEXT_PUBLIC_AUTH_SERVER;
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 
@@ -24,14 +26,18 @@ export default function Home() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({username, password})
+                body: JSON.stringify({
+                    "username": username, 
+                    "password": password
+                }),
+                credentials: "include"
 
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                console.log("Success", data);
+                router.push("/tasks")
             } else {
                 setErrorMessage(data.message);
             }
@@ -46,7 +52,7 @@ export default function Home() {
     return (
     <>
     <main id="main" className="flex flex-grow flex-col justify-center items-center relative bg-[#f2f1ed] overflow-hidden">
-        <div className="min-w-[352px] min-h-[487px] my-20 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white">
+        <div className="max-w-[352px] min-w-[352px] min-h-[487px] my-20 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white">
             <div className="h-1/3">
                 <h1 className="text-3xl">Log in</h1>
             </div>
@@ -77,7 +83,9 @@ export default function Home() {
                 </div>
                 <button type="submit" className="btn-primary cursor-pointer">Sign in</button>
             </form>
-            <p className="text-red text-md">{errorMessage}</p>
+            <div className="flex mx-4 p-8">
+                <p className="text-red md:text-md text-sm text-center">{errorMessage}</p>
+            </div>
         </div>
     </main>
     </>
