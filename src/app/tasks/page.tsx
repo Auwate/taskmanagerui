@@ -18,6 +18,7 @@ export default function Home() {
             try {
 
                 const response = fetch(`${BACKEND}/api/tasks`)
+                console.log(response)
 
             } catch (error) {
 
