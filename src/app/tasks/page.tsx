@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
 
-    const BACKEND = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+    const BACKEND = process.env.NEXT_PUBLIC_SERVER ? process.env.NEXT_PUBLIC_SERVER : "localhost:9090";
     const router = useRouter();
 
     useEffect(() => {
@@ -17,7 +17,16 @@ export default function Home() {
 
             try {
 
-                const response = fetch(`${BACKEND}/api/tasks`)
+                const response = await fetch(`${BACKEND}/api/tasks`, {
+
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include"
+    
+                });
+    
                 console.log(response)
 
             } catch (error) {

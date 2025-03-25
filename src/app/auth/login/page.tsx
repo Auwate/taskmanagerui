@@ -12,7 +12,7 @@ export default function Home() {
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter()
 
-    const auth = process.env.NEXT_PUBLIC_AUTH_SERVER;
+    const auth = process.env.NEXT_PUBLIC_SERVER ? process.env.NEXT_PUBLIC_SERVER : "localhost:3000";
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 
