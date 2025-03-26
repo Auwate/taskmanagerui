@@ -24,7 +24,7 @@ interface Task {
     name: string,
     description: string,
     priority: number,
-    tag: Tag,
+    tag: Tag?,
 }
 
 export default function Home() {
@@ -55,7 +55,7 @@ export default function Home() {
 
                 if (response.ok) {
                     console.log(data)
-                    setTasks((tasks) => tasks = data.data)
+                    setTasks(data.data)
                 } else {
                     router.push("/auth/login")
                 }
@@ -83,6 +83,9 @@ export default function Home() {
             setIndex((index) => index+1)
         }
     }
+    const handleCreate = (task: Task) => {
+        setTasks((tasks) => tasks.concat(task))
+    }
 
     return (
     <>
@@ -105,7 +108,7 @@ export default function Home() {
             <FaArrowAltCircleRight className="icon" onClick={handleIncrement} />
         </div>
         <div className="hidden md:flex w-1/3 flex-col justify-center items-center space-y-4">
-            <button className="btn-secondary w-[13vw] cursor-pointer">Create</button>
+            <button onClick={() => (handleCreate({id: 1, name: "Temp", description: "Temp", priority: 1, tag: null}))} className="btn-secondary w-[13vw] cursor-pointer">Create</button>
             <button className="btn-secondary w-[13vw] cursor-pointer">Delete</button>
             <button className="btn-secondary w-[13vw] cursor-pointer">Modify</button>
         </div>
