@@ -119,13 +119,13 @@ export default function Home() {
             return parseInt(hex, 16)
         }
 
-        setColor((prevColor) => (
-            prevColor = {
+        setColor(
+            {
                 red: parseHex(val.slice(1,3)),
                 green: parseHex(val.slice(3,5)),
                 blue: parseHex(val.slice(5,7))
             }
-        ));
+        );
 
     }
 
