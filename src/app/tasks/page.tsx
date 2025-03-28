@@ -343,11 +343,11 @@ export default function Home() {
                                 id="description"
                                 name="description"
                                 value={description}
-                                maxLength={150}
+                                maxLength={100}
                                 className={`${isCreating || isModifying ? "block" : "hidden"} break-words text-balance whitespace-pre-wrap resize-none border border-px rounded-xl py-4 px-3 h-[60px]`}
                                 placeholder=" "
                                 aria-label="description field"
-                                onChange={(event) => setDescription(event.target.value.slice(0, Math.min(150, event.target.value.length)))}
+                                onChange={(event) => setDescription(event.target.value.slice(0, Math.min(100, event.target.value.length)))}
                             ></textarea>
                         </div>
                         <div className={`${isCreating || isModifying ? "block" : "hidden"} w-[100%] my-1 border border-px border-[#b3b3b3]`}></div>
