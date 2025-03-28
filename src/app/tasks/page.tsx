@@ -313,7 +313,7 @@ export default function Home() {
             <FaArrowAltCircleLeft className="icon" onClick={handleDecrementClicked} />
             <form method="POST" onSubmit={handleSubmit} className="flex flex-col justify-center items-center">
                 <div
-                    className={`max-w-[300px] min-w-[300px] min-h-[400px] max-h-[400px] my-4 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white border border-px`}
+                    className={`max-w-[300px] min-w-[300px] min-h-[425px] max-h-[425px] my-4 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white border border-px`}
                     style={{boxShadow: `1px 2px 10px ${isCreating || isModifying ? 
                         "rgb(" + color.red + "," + color.green + "," + color.blue + ")" :
                             tasks.length > 0 ?
@@ -350,7 +350,7 @@ export default function Home() {
                                 onChange={(event) => setDescription(event.target.value.slice(0, Math.min(100, event.target.value.length)))}
                             ></textarea>
                         </div>
-                        <div className={`${isCreating || isModifying ? "block" : "hidden"} w-[100%] my-1 border border-px border-[#b3b3b3]`}></div>
+                        <div className={`${isCreating || isModifying ? "block" : "hidden"} w-[100%] border border-px border-[#b3b3b3]`}></div>
                         <div className={`${isCreating || isModifying ? "block" : "hidden"} flex justify-around items-center`}>
                             <div className="flex flex-col">
                                 <p className="text-[#b3b3b3] pointer-events-none mb-4">Color?</p>
