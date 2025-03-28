@@ -84,7 +84,7 @@ export default function Home() {
 
         fetchTasks();
 
-    }, [tasks]);
+    }, []);
 
     // Utilities
 
