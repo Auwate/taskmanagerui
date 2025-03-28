@@ -1,7 +1,7 @@
 "use client";
 
-import "../../../styles/login.css"
-import "../../../styles/global.css"
+import "@/styles/login.css"
+import "@/styles/global.css"
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 

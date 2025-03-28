@@ -1,7 +1,7 @@
 "use client";
 
-import "../../styles/login.css"
-import "../../styles/global.css"
+import "@/styles/login.css"
+import "@/styles/global.css"
 
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { useRouter } from "next/navigation";
@@ -15,12 +15,12 @@ interface Color {
 }
 
 interface Tag {
-    name: string | undefined,
+    name: string,
     color: Color
 }
 
 interface Task {
-    id: number,
+    id: number | null,
     name: string,
     description: string,
     priority: number,
@@ -33,14 +33,19 @@ export default function Home() {
     const router = useRouter();
 
     const [tasks, setTasks] = useState<Task[]>([]);
-    const [index, setIndex] = useState(0);
+    const [index, setIndex] = useState<number>(0);
 
     const [isCreating, setIsCreating] = useState<boolean>(false);
+    const [isModifying, setIsModifying] = useState<boolean>(false);
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
 
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [color, setColor] = useState<Color>({red: 0, green: 0, blue: 0});
-    const [priority, setPriority] = useState(1);
+    const [priority, setPriority] = useState<number>(1);
+
+    // Requests
 
     useEffect(() => {
 
@@ -49,29 +54,25 @@ export default function Home() {
             try {
 
                 const response = await fetch(`${BACKEND}/api/tasks`, {
-
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     credentials: "include"
-    
                 });
     
                 const data = await response.json();
 
                 if (response.ok) {
-                    console.log(data)
                     setTasks(data.data)
                 } else {
-                    router.push("/auth/login")
+                    resetChecks();
+                    setIsAuthenticated(false);
                 }
 
             } catch (error) {
-
-                console.log(error)
-                router.push("/auth/login")
-
+                resetChecks();
+                setIsAuthenticated(false);
             }
 
         };
@@ -80,43 +81,201 @@ export default function Home() {
 
     }, []);
 
-    const handleDecrement = () => {
+    // Utilities
+
+    const resetChecks = () => {
+        setIsCreating(false);
+        setIsDeleting(false);
+        setIsModifying(false);
+    }
+
+    const getPriority = () => {
+        return priority;
+    }
+
+    const rgbToHex = () => {
+
+        return '#' + [color.red, color.green, color.blue].map(
+            (color) => {
+                const hex = color.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }
+        ).join('');
+
+    }
+
+    // onClick handlers
+
+    const handleDecrementClicked = () => {
         setIndex((index) => index-1 < 0 ? tasks.length-1 : index-1);
-        setIsCreating(false);
+        resetChecks();
     }
 
-    const handleIncrement = () => {
+    const handleIncrementClicked = () => {
         setIndex((index) => index+1 > tasks.length-1 ? 0 : index+1);
-        setIsCreating(false);
+        resetChecks();
     }
 
-    const handleCreate = (task: Task) => {
-        setTasks((tasks) => tasks.concat(task));
+    const handleCreateClicked = () => {
+        setIsModifying(false);
+        setIsDeleting(false);
+        setIsCreating(true);
     }
 
-    const handleSubmit = (form: FormEvent<HTMLFormElement>) => {
+    const handleModifyClicked = () => {
 
-        form.preventDefault();
-
-        if (title === undefined || description === undefined) {
+        if (tasks.length === 0) {
             return;
         }
 
-        handleCreate({id: 0, name: title, description: description, priority: priority, tag: {
-            name: undefined,
-            color: color
-        }})
-
         setIsCreating(false);
+        setIsDeleting(false);
+        setIsModifying(true);
+
+        setTitle(tasks[index].name);
+        setDescription(tasks[index].description);
+        setPriority(tasks[index].priority);
+        setColor(tasks[index].tag.color);
+    }
+
+    const handleDeleteClicked = () => {
+
+        if (tasks.length === 0) {
+            return;
+        }
+
+        setIsModifying(false);
+        setIsCreating(false);
+        setIsDeleting(true);
+    }
+
+    // State change functions
+
+    const handleCreate = (newTask: Task) => {
+
+        let end: number = tasks.length;
+
+        setTasks((prevTasks) => (prevTasks.concat(
+            [newTask]
+        )));
+
+        setIndex(end);
+
+        return newTask;
 
     }
+
+    const handleDelete = async () => {
+
+        resetChecks();
+
+        const newLength = tasks.length-1;
+        const toDelete = tasks[index];
+
+        setTasks((prevTasks) => prevTasks.filter((_, taskIndex) => taskIndex != index));
+
+        if (index >= newLength) {
+            handleDecrementClicked();
+        }
+
+        await handleDataTransfer(`/api/tasks/${toDelete.id}`, "DELETE", null);
+
+    }
+
+    const handleUpdate = () => {
+
+        const newTask: Task = {
+            id: tasks[index].id,
+            name: title,
+            description: description,
+            priority: priority,
+            tag: {
+                name: "N/A",
+                color: color
+            }
+        };
+
+        setTasks((prevTasks) => (prevTasks.map((task, taskIndex) => (taskIndex === index ? newTask : task))));
+        resetChecks();
+
+        return newTask;
+
+    }
+
+    // Form submit
+
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+
+        event.preventDefault();
+
+        if (isCreating) {
+
+            let task: Task = {
+                id: null,
+                name: title,
+                description: description,
+                priority: priority,
+                tag: {
+                    name: "N/A",
+                    color: color
+                }
+            }
+
+            const data = await handleDataTransfer("/api/tasks", "POST", task);
+            task.id = data !== undefined ? parseInt(data.data.slice(data.data.lastIndexOf("/")+1)) : null;
+
+            handleCreate(task);
+
+        } else if (isModifying) {
+            let newTask = handleUpdate();
+            await handleDataTransfer(`/api/tasks/${newTask.id}`, "PUT", newTask);
+        } else {
+            return;
+        }""
+
+        setTitle("");
+        setDescription("");
+        setPriority(1);
+        setColor({red: 0, green: 0, blue: 0});
+        resetChecks();
+
+    }
+
+    // Data handlers
+
+    const handleDataTransfer = async (url: string, method: string, body: Task | null): Promise<any | undefined> => {
+
+        try {
+            const response = await fetch(`${BACKEND}${url}`, {
+                method: method,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body),
+                credentials: "include"
+            });
+
+            if (!response.ok) {
+                setIsAuthenticated(false);
+            } else {
+                return await response.json();
+            }
+        } catch (error) {
+            setIsAuthenticated(false);
+        }
+
+        return undefined;
+
+    }
+
+    // onChange handlers
 
     const handleColorChange = (event: ChangeEvent<HTMLInputElement>) => {
 
         const val: string = event.target.value;
 
         const parseHex = (hex: string) => {
-            return parseInt(hex, 16)
+            return parseInt(hex, 16);
         }
 
         setColor(
@@ -137,13 +296,17 @@ export default function Home() {
 
     return (
     <>
-    <main className="flex-grow flex flex-row mx-12 mb-4 justify-evenly items-center">
-        <div className="md:flex hidden w-1/2 justify-center items-center space-x-8">
-            <FaArrowAltCircleLeft className="icon" onClick={handleDecrement} />
+    <main className="flex-grow flex md:flex-row flex-col md:mx-12 md:mb-4 justify-evenly items-center">
+        <div className={`${isAuthenticated ? "hidden" : "flex"} w-30% min-w-[200px] h-30% bg-white flex flex-col justify-center items-center space-y-8`}>
+            <p className="text-center">Your session has timed out or we could not authenticate you. Please login again.</p>
+            <button className="btn-primary p-4 min-w-[100px] w-[8vw] cursor-pointer" onClick={() => (router.push("/auth/login"))}>Login</button>
+        </div>
+        <div className={`${isAuthenticated ? "flex" : "hidden"} ${isDeleting ? "blur" : ""} transition filter 300ms ease-in-out w-1/2 justify-center items-center space-x-8`}>
+            <FaArrowAltCircleLeft className="icon" onClick={handleDecrementClicked} />
             <form method="POST" onSubmit={handleSubmit} className="flex flex-col justify-center items-center">
                 <div
-                    className={`max-w-[328px] min-w-[328px] min-h-[450px] my-4 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white`}
-                    style={{boxShadow: `1px 2px 10px ${isCreating ? 
+                    className={`max-w-[328px] min-w-[250px] min-h-[400px] my-4 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white border border-px`}
+                    style={{boxShadow: `1px 2px 10px ${isCreating || isModifying ? 
                         "rgb(" + color.red + "," + color.green + "," + color.blue + ")" :
                             tasks.length > 0 ?
                                 "rgb(" + tasks[index].tag.color.red + "," + tasks[index].tag.color.green + "," + tasks[index].tag.color.blue + ")" :
@@ -151,63 +314,77 @@ export default function Home() {
                 >
                     <div className="w-[90%] h-3/4 flex flex-col space-y-8 p-4">
                         <div className="flex flex-col min-w-[100%]">
-                            <p className="text-[#b3b3b3] pointer-events-none mb-4">{isCreating ? "What is the title of your task?" : "Title"}</p>
-                            <p className={`${isCreating ? "hidden" : "block"}`}>{tasks.length > 0 ? tasks[index].name : "Tasks are empty..."}</p>
+                            <p className="text-[#b3b3b3] pointer-events-none mb-4">{isCreating || isModifying ? "What is the title of your task?" : "Title"}</p>
+                            <p className={`${isCreating || isModifying ? "hidden" : "block"}`}>{tasks.length > 0 ? tasks[index].name : "Tasks are empty..."}</p>
                             <textarea
                                 id="title"
                                 name="title"
-                                className={`${isCreating ? "block" : "hidden"} resize-none border border-px rounded-xl py-4 px-3 h-[60px]`}
+                                value={title}
+                                className={`${isCreating || isModifying ? "block" : "hidden"} resize-none border border-px rounded-xl py-4 px-3 h-[60px]`}
                                 placeholder=" "
                                 aria-label="title field"
                                 onChange={(event) => setTitle(event.target.value)}
                             ></textarea>
                         </div>
-                        <div className={`${isCreating ? "hidden" : "block"} w-[100%] my-6 border border-px border-[#b3b3b3]`}></div>
+                        <div className={`${isCreating || isModifying ? "hidden" : "block"} w-[100%] my-6 border border-px border-[#b3b3b3]`}></div>
                         <div className="flex flex-col min-w-[100%]">
-                            <p className="text-[#b3b3b3] pointer-events-none mb-4">{isCreating ? "What is the description of your task?" : "Description"}</p>
-                            <p className={`${isCreating ? "hidden" : "block"}`}>{tasks.length > 0 ? tasks[index].description : "Begin writing your first task by clicking the Create button on the right."}</p>
+                            <p className="text-[#b3b3b3] pointer-events-none mb-4">{isCreating || isModifying ? "What is the description of your task?" : "Description"}</p>
+                            <p className={`${isCreating || isModifying ? "hidden" : "block"}`}>{tasks.length > 0 ? tasks[index].description : "Begin writing your first task by clicking the Create button on the right."}</p>
                             <textarea
                                 id="description"
                                 name="description"
-                                className={`${isCreating ? "block" : "hidden"} resize-none border border-px rounded-xl py-4 px-3 h-[60px]`}
+                                value={description}
+                                className={`${isCreating || isModifying ? "block" : "hidden"} resize-none border border-px rounded-xl py-4 px-3 h-[60px]`}
                                 placeholder=" "
                                 aria-label="description field"
                                 onChange={(event) => setDescription(event.target.value)}
                             ></textarea>
                         </div>
-                        <div className={`${isCreating ? "block" : "hidden"} w-[100%] my-1 border border-px border-[#b3b3b3]`}></div>
-                        <div className={`${isCreating ? "block" : "hidden"} flex justify-around items-center`}>
+                        <div className={`${isCreating || isModifying ? "block" : "hidden"} w-[100%] my-1 border border-px border-[#b3b3b3]`}></div>
+                        <div className={`${isCreating || isModifying ? "block" : "hidden"} flex justify-around items-center`}>
                             <div className="flex flex-col">
                                 <p className="text-[#b3b3b3] pointer-events-none mb-4">Color?</p>
                                 <input
                                     type="color"
+                                    value={rgbToHex()}
                                     className="rounded-xl w-[50px] h-[50px]"
                                     onChange={handleColorChange}
                                 ></input>
                             </div>
-                            <div className={`${isCreating ? "block" : "hidden"} h-[80px] my-6 border border-px border-[#b3b3b3]`}></div>
+                            <div className={`${isCreating || isModifying ? "block" : "hidden"} h-[80px] my-6 border border-px border-[#b3b3b3]`}></div>
                             <div className="flex flex-col">
                                 <p className="text-[#b3b3b3] pointer-events-none mb-4">Priority?</p>
                                 <input
                                     type="number"
                                     className="rounded-xl w-[70px] h-[50px] px-4 border border-px"
                                     min={1}
+                                    max={50}
+                                    value={getPriority()}
                                     onChange={handlePriorityChange}
                                 ></input>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className={`${isCreating ? "block" : "hidden"} mt-4`}>
-                    <button type="submit" className="btn-secondary w-[13vw] cursor-pointer">Submit</button>
+                <div className={`${isCreating || isModifying ? "block" : "hidden"} mt-4`}>
+                    <button type="submit" className="btn-secondary w-[13vw] min-w-[80px] cursor-pointer">{isCreating ? "Submit" : "Update"}</button>
                 </div>
             </form>
-            <FaArrowAltCircleRight className="icon" onClick={handleIncrement} />
+            <FaArrowAltCircleRight className="icon" onClick={handleIncrementClicked} />
         </div>
-        <div className="hidden md:flex w-1/3 flex-col justify-center items-center space-y-4">
-            <button onClick={() => (setIsCreating(() => !isCreating))} className="btn-secondary w-[13vw] cursor-pointer">Create</button>
-            <button className="btn-secondary w-[13vw] cursor-pointer">Delete</button>
-            <button className="btn-secondary w-[13vw] cursor-pointer">Modify</button>
+        <div className={`${isAuthenticated ? "flex md:flex-col flex-row my-8 md:my-0 md:space-y-4 space-x-8 md:space-x-0" : "hidden"} ${isDeleting ? "blur" : ""} transition filter 300ms ease-in-out w-1/3 flex-col justify-center items-center`}>
+            <button onClick={handleCreateClicked} className="btn-secondary w-[13vw] min-w-[80px] cursor-pointer">Create</button>
+            <button onClick={handleDeleteClicked} className="btn-secondary w-[13vw] min-w-[80px] cursor-pointer">Delete</button>
+            <button onClick={handleModifyClicked} className="btn-secondary w-[13vw] min-w-[80px] cursor-pointer">Modify</button>
+        </div>
+        <div className={`${isAuthenticated && isDeleting ? "flex" : "hidden"} justify-center items-center absolute top-0 left-0 w-[100vw] h-[100vh]`}>
+            <div className="flex flex-col justify-center items-center w-[30%] min-w-[250px] h-[30%] space-y-8 bg-white border border-px p-4">
+                <p className="text-center">Are you sure you want to delete?</p>
+                <div className="flex flex-row space-x-4">
+                    <button className="btn-primary-red p-4 min-w-[100px] w-[8vw] cursor-pointer" onClick={handleDelete}>Delete</button>
+                    <button className="btn-secondary p-4 min-w-[100px] w-[8vw] cursor-pointer" onClick={resetChecks}>Cancel</button>
+                </div>
+            </div>
         </div>
     </main>
     </>
