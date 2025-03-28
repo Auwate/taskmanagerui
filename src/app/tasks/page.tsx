@@ -27,6 +27,10 @@ interface Task {
     tag: Tag
 }
 
+interface API {
+    data: string
+}
+
 export default function Home() {
 
     const BACKEND = process.env.NEXT_PUBLIC_SERVER ? process.env.NEXT_PUBLIC_SERVER : "http://localhost:9090";
@@ -71,6 +75,7 @@ export default function Home() {
                 }
 
             } catch (error) {
+                console.log(error);
                 resetChecks();
                 setIsAuthenticated(false);
             }
@@ -153,7 +158,7 @@ export default function Home() {
 
     const handleCreate = (newTask: Task) => {
 
-        let end: number = tasks.length;
+        const end: number = tasks.length;
 
         setTasks((prevTasks) => (prevTasks.concat(
             [newTask]
@@ -210,7 +215,7 @@ export default function Home() {
 
         if (isCreating) {
 
-            let task: Task = {
+            const task: Task = {
                 id: null,
                 name: title,
                 description: description,
@@ -227,11 +232,11 @@ export default function Home() {
             handleCreate(task);
 
         } else if (isModifying) {
-            let newTask = handleUpdate();
+            const newTask = handleUpdate();
             await handleDataTransfer(`/api/tasks/${newTask.id}`, "PUT", newTask);
         } else {
             return;
-        }""
+        }
 
         setTitle("");
         setDescription("");
@@ -243,7 +248,7 @@ export default function Home() {
 
     // Data handlers
 
-    const handleDataTransfer = async (url: string, method: string, body: Task | null): Promise<any | undefined> => {
+    const handleDataTransfer = async (url: string, method: string, body: Task | null): Promise<API | undefined> => {
 
         try {
             const response = await fetch(`${BACKEND}${url}`, {
@@ -261,6 +266,7 @@ export default function Home() {
                 return await response.json();
             }
         } catch (error) {
+            console.log(error);
             setIsAuthenticated(false);
         }
 
