@@ -323,7 +323,7 @@ export default function Home() {
                     <div className="w-[90%] h-3/4 flex flex-col space-y-8 p-4">
                         <div className="flex flex-col min-w-[100%]">
                             <p className="text-[#b3b3b3] pointer-events-none mb-4">{isCreating || isModifying ? "What is the title of your task?" : "Title"}</p>
-                            <p className={`${isCreating || isModifying ? "hidden" : "block"}  break-words text-balance whitespace-pre-wrap`}>{tasks.length > 0 ? tasks[index].name : "Tasks are empty..."}</p>
+                            <p className={`${isCreating || isModifying ? "hidden" : "block"} text-ellipsis break-words text-balance whitespace-pre-wrap`}>{tasks.length > 0 ? tasks[index].name : "Tasks are empty..."}</p>
                             <textarea
                                 id="title"
                                 name="title"
@@ -338,7 +338,7 @@ export default function Home() {
                         <div className={`${isCreating || isModifying ? "hidden" : "block"} w-[100%] my-6 border border-px border-[#b3b3b3]`}></div>
                         <div className="flex flex-col min-w-[100%]">
                             <p className="text-[#b3b3b3] pointer-events-none mb-4">{isCreating || isModifying ? "What is the description of your task?" : "Description"}</p>
-                            <p className={`${isCreating || isModifying ? "hidden" : "block"}  break-words text-balance whitespace-pre-wrap`}>{tasks.length > 0 ? tasks[index].description : "Begin writing your first task by clicking the Create button on the right."}</p>
+                            <p className={`${isCreating || isModifying ? "hidden" : "block"} text-ellipsis break-words text-balance whitespace-pre-wrap`}>{tasks.length > 0 ? tasks[index].description : "Begin writing your first task by clicking the Create button on the right."}</p>
                             <textarea
                                 id="description"
                                 name="description"
