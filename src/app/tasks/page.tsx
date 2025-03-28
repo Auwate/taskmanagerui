@@ -338,16 +338,16 @@ export default function Home() {
                         <div className={`${isCreating || isModifying ? "hidden" : "block"} w-[100%] my-6 border border-px border-[#b3b3b3]`}></div>
                         <div className="flex flex-col min-w-[100%]">
                             <p className="text-[#b3b3b3] pointer-events-none mb-4">{isCreating || isModifying ? "What is the description of your task?" : "Description"}</p>
-                            <p className={`${isCreating || isModifying ? "hidden" : "block"} text-ellipsis break-words text-balance whitespace-pre-wrap`}>{tasks.length > 0 ? tasks[index].description : "Begin writing your first task by clicking the Create button on the right."}</p>
+                            <p className={`${isCreating || isModifying ? "hidden" : "block"} text-ellipsis break-words text-balance whitespace-pre-wrap max-h-[144px]`}>{tasks.length > 0 ? tasks[index].description : "Begin writing your first task by clicking the Create button on the right."}</p>
                             <textarea
                                 id="description"
                                 name="description"
                                 value={description}
-                                maxLength={250}
+                                maxLength={150}
                                 className={`${isCreating || isModifying ? "block" : "hidden"} break-words text-balance whitespace-pre-wrap resize-none border border-px rounded-xl py-4 px-3 h-[60px]`}
                                 placeholder=" "
                                 aria-label="description field"
-                                onChange={(event) => setDescription(event.target.value.slice(0, Math.min(250, event.target.value.length)))}
+                                onChange={(event) => setDescription(event.target.value.slice(0, Math.min(150, event.target.value.length)))}
                             ></textarea>
                         </div>
                         <div className={`${isCreating || isModifying ? "block" : "hidden"} w-[100%] my-1 border border-px border-[#b3b3b3]`}></div>
