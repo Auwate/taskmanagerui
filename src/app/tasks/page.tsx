@@ -320,7 +320,7 @@ export default function Home() {
                                 "rgb(" + tasks[index].tag.color.red + "," + tasks[index].tag.color.green + "," + tasks[index].tag.color.blue + ")" :
                                 "black"}`}}
                 >
-                    <div className="w-[90%] h-3/4 flex flex-col space-y-4 p-4">
+                    <div className="w-[90%] h-3/4 flex flex-col space-around space-y-4 p-4">
                         <div className="flex flex-col min-w-[100%]">
                             <p className="text-[#b3b3b3] pointer-events-none mb-4">{isCreating || isModifying ? "What is the title of your task?" : "Title"}</p>
                             <p className={`${isCreating || isModifying ? "hidden" : "block"} text-ellipsis break-words text-balance whitespace-pre-wrap`}>{tasks.length > 0 ? tasks[index].name : "Tasks are empty..."}</p>
@@ -335,7 +335,7 @@ export default function Home() {
                                 onChange={(event) => setTitle(event.target.value.slice(0, Math.min(100, event.target.value.length)))}
                             ></textarea>
                         </div>
-                        <div className={`${isCreating || isModifying ? "hidden" : "block"} w-[100%] my-2 border border-px border-[#b3b3b3]`}></div>
+                        <div className={`${isCreating || isModifying ? "hidden" : "block"} w-[100%] my-2 mb-4 border border-px border-[#b3b3b3]`}></div>
                         <div className="flex flex-col min-w-[100%]">
                             <p className="text-[#b3b3b3] pointer-events-none mb-4">{isCreating || isModifying ? "What is the description of your task?" : "Description"}</p>
                             <p className={`${isCreating || isModifying ? "hidden" : "block"} text-ellipsis break-words text-balance whitespace-pre-wrap max-h-[144px]`}>{tasks.length > 0 ? tasks[index].description : "Begin writing your first task by clicking the Create button on the right."}</p>
