@@ -68,7 +68,7 @@ export default function Home() {
                 const data = await response.json();
 
                 if (response.ok) {
-                    setTasks(data.data)
+                    setTasks(data.data.sort((a: Task, b: Task) => a.priority - b.priority))
                 } else {
                     resetChecks();
                     setIsAuthenticated(false);
@@ -84,7 +84,7 @@ export default function Home() {
 
         fetchTasks();
 
-    }, []);
+    }, [tasks]);
 
     // Utilities
 
@@ -158,13 +158,9 @@ export default function Home() {
 
     const handleCreate = (newTask: Task) => {
 
-        const end: number = tasks.length;
-
         setTasks((prevTasks) => (prevTasks.concat(
             [newTask]
         )));
-
-        setIndex(end);
 
         return newTask;
 
@@ -191,7 +187,7 @@ export default function Home() {
 
         const newTask: Task = {
             id: tasks[index].id,
-            name: title,
+            name: title === "" ? " " : title,
             description: description,
             priority: priority,
             tag: {
@@ -303,6 +299,7 @@ export default function Home() {
         } else {
             setPriority(1);
         }
+
     }
 
     return (
@@ -316,7 +313,7 @@ export default function Home() {
             <FaArrowAltCircleLeft className="icon" onClick={handleDecrementClicked} />
             <form method="POST" onSubmit={handleSubmit} className="flex flex-col justify-center items-center">
                 <div
-                    className={`max-w-[328px] min-w-[250px] min-h-[400px] my-4 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white border border-px`}
+                    className={`max-w-[300px] min-w-[300px] min-h-[400px] my-4 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white border border-px`}
                     style={{boxShadow: `1px 2px 10px ${isCreating || isModifying ? 
                         "rgb(" + color.red + "," + color.green + "," + color.blue + ")" :
                             tasks.length > 0 ?
@@ -331,10 +328,11 @@ export default function Home() {
                                 id="title"
                                 name="title"
                                 value={title}
-                                className={`${isCreating || isModifying ? "block" : "hidden"} resize-none border border-px rounded-xl py-4 px-3 h-[60px]`}
+                                maxLength={100}
+                                className={`${isCreating || isModifying ? "block" : "hidden"} break-words text-balance whitespace-pre-wrap resize-none border border-px rounded-xl py-4 px-3 h-[60px]`}
                                 placeholder=" "
                                 aria-label="title field"
-                                onChange={(event) => setTitle(event.target.value)}
+                                onChange={(event) => setTitle(event.target.value.slice(0, Math.min(100, event.target.value.length)))}
                             ></textarea>
                         </div>
                         <div className={`${isCreating || isModifying ? "hidden" : "block"} w-[100%] my-6 border border-px border-[#b3b3b3]`}></div>
@@ -345,10 +343,11 @@ export default function Home() {
                                 id="description"
                                 name="description"
                                 value={description}
-                                className={`${isCreating || isModifying ? "block" : "hidden"} resize-none border border-px rounded-xl py-4 px-3 h-[60px]`}
+                                maxLength={250}
+                                className={`${isCreating || isModifying ? "block" : "hidden"} break-words text-balance whitespace-pre-wrap resize-none border border-px rounded-xl py-4 px-3 h-[60px]`}
                                 placeholder=" "
                                 aria-label="description field"
-                                onChange={(event) => setDescription(event.target.value)}
+                                onChange={(event) => setDescription(event.target.value.slice(0, Math.min(250, event.target.value.length)))}
                             ></textarea>
                         </div>
                         <div className={`${isCreating || isModifying ? "block" : "hidden"} w-[100%] my-1 border border-px border-[#b3b3b3]`}></div>
@@ -369,6 +368,8 @@ export default function Home() {
                                     type="number"
                                     className="rounded-xl w-[70px] h-[50px] px-4 border border-px"
                                     value={getPriority()}
+                                    min={1}
+                                    max={99}
                                     onChange={handlePriorityChange}
                                 ></input>
                             </div>
