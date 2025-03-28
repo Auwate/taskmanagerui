@@ -313,7 +313,7 @@ export default function Home() {
             <FaArrowAltCircleLeft className="icon" onClick={handleDecrementClicked} />
             <form method="POST" onSubmit={handleSubmit} className="flex flex-col justify-center items-center">
                 <div
-                    className={`max-w-[300px] min-w-[300px] min-h-[400px] my-4 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white border border-px`}
+                    className={`max-w-[300px] min-w-[300px] min-h-[400px] max-h-[400px] my-4 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white border border-px`}
                     style={{boxShadow: `1px 2px 10px ${isCreating || isModifying ? 
                         "rgb(" + color.red + "," + color.green + "," + color.blue + ")" :
                             tasks.length > 0 ?
