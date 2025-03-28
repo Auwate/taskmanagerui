@@ -295,8 +295,13 @@ export default function Home() {
     }
 
     const handlePriorityChange = (event: ChangeEvent<HTMLInputElement>) => {
-        if (!isNaN(parseInt(event.target.value))) {
+
+        const priorityVal = parseInt(event.target.value)
+
+        if (!isNaN(priorityVal) || priority >= 1 && priority <= 99) {
             setPriority(parseInt(event.target.value))
+        } else {
+            setPriority(1);
         }
     }
 
@@ -363,8 +368,6 @@ export default function Home() {
                                 <input
                                     type="number"
                                     className="rounded-xl w-[70px] h-[50px] px-4 border border-px"
-                                    min={1}
-                                    max={50}
                                     value={getPriority()}
                                     onChange={handlePriorityChange}
                                 ></input>
