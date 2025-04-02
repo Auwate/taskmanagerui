@@ -4,6 +4,7 @@ import "@/styles/login.css"
 import "@/styles/global.css"
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
 
@@ -12,7 +13,36 @@ export default function Home() {
     const [errorMessage, setErrorMessage] = useState("");
     const router = useRouter()
 
-    const auth = process.env.NEXT_PUBLIC_SERVER ? process.env.NEXT_PUBLIC_SERVER : "http://localhost:9095";
+    const AUTH = process.env.NEXT_PUBLIC_SERVER ? process.env.NEXT_PUBLIC_SERVER : "http://localhost:9095";
+
+    useEffect(() => {
+
+        async function quicklyValidate() {
+
+            try {
+
+                
+                const response = await fetch(`${AUTH}/api/auth/validate`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include"
+                });
+
+                if (response.ok) {
+                    router.push("/tasks")
+                }
+
+            } catch (error) {
+                console.log(error);
+            }
+
+        }
+
+        quicklyValidate();
+
+    }, [])
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 
@@ -20,7 +50,7 @@ export default function Home() {
 
         try {
 
-            const response = await fetch(`${auth}/api/auth/login`, {
+            const response = await fetch(`${AUTH}/api/auth/login`, {
 
                 method: "POST",
                 headers: {
