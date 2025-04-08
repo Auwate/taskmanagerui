@@ -14,6 +14,7 @@ export default function Home() {
 
     const AUTH = process.env.NEXT_PUBLIC_SERVER ? process.env.NEXT_PUBLIC_SERVER : "http://localhost:9095";
 
+
     useEffect(() => {
 
         async function getQrCode(): Promise<void> {
