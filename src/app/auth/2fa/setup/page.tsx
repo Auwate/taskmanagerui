@@ -3,6 +3,7 @@
 import { QRCodeSVG } from "qrcode.react";
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -89,6 +90,7 @@ export default function Home() {
                     size={172}
                     level="H"
                 ></QRCodeSVG>
+                <p className="text-sm block md:hidden"><Link href={qrCode}>Click here to set up on mobile.</Link></p>
                 <div className="w-1/2 border mt-2 border-px border-[#b3b3b3]"></div>
                 <h1 className="text-center text-sm">Please enable 2FA by scanning this QR code and entering your one time code. We recommend Google Authenticator or Authy.</h1>
                 <input
