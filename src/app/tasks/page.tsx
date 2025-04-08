@@ -76,6 +76,7 @@ export default function Home() {
                 }
 
             } catch (error) {
+                console.log(error);
                 resetChecks();
                 setIsAuthenticated(false);
             }
@@ -210,15 +211,8 @@ export default function Home() {
 
         event.preventDefault();
 
-        let invalidTitle = false;
-        let invalidDesc = false;
-
         if (title.length === 0 || title === "") {
             setTitleIsInvalid(true);
-            invalidTitle = true;
-        }
-
-        if (invalidTitle) {
             return;
         }
 
