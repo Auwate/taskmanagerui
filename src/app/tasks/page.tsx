@@ -211,7 +211,7 @@ export default function Home() {
 
         event.preventDefault();
 
-        if (title.length === 0 || title === "") {
+        if (title.length === 0 || title === "" || title.trim() === "") {
             setTitleIsInvalid(true);
             return;
         }
