@@ -14,6 +14,9 @@ export default function Home() {
     const [totp, setTotp] = useState("");
     const [requireTotp, setRequiresTotp] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+
+    const [isValidated, setIsValidated] = useState(false);
+
     const router = useRouter();
 
     const AUTH = process.env.NEXT_PUBLIC_SERVER ? process.env.NEXT_PUBLIC_SERVER : "http://localhost:9095";
@@ -33,7 +36,7 @@ export default function Home() {
                 });
 
                 if (response.ok) {
-                    router.push("/tasks")
+                    setIsValidated(true);
                 }
 
             } catch (error) {
@@ -93,7 +96,13 @@ export default function Home() {
     return (
     <>
     <main id="main" className="flex flex-grow flex-col justify-center items-center relative bg-[#f2f1ed] overflow-hidden">
-        <div className="max-w-[352px] min-w-[352px] min-h-[487px] my-20 py-16 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white">
+        <div className={`${isValidated ? "flex" : "hidden"} z-2 justify-center items-center absolute top-0 left-0 w-[100vw] h-[100vh]`}>
+            <div className="flex flex-col justify-center items-center w-[30%] min-w-[250px] h-[30%] space-y-2 bg-white border border-px p-4">
+                <h1 className="text-center text-xl my-4">You have already been authenticated.</h1>
+                <button className="btn-primary p-4 min-w-[100px] w-[8vw] cursor-pointer my-4" onClick={() => (router.push("/tasks"))}>Confirm</button>
+            </div>
+        </div>
+        <div className={`${isValidated ? "blur" : ""} max-w-[352px] min-w-[352px] min-h-[487px] my-20 py-16 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white`}>
             <div className="h-1/3">
                 <h1 className="text-3xl">Log in</h1>
             </div>
