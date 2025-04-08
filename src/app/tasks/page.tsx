@@ -43,6 +43,7 @@ export default function Home() {
     const [isModifying, setIsModifying] = useState<boolean>(false);
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+    const [titleIsInvalid, setTitleIsInvalid] = useState<boolean>(false);
 
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -75,7 +76,6 @@ export default function Home() {
                 }
 
             } catch (error) {
-                console.log(error);
                 resetChecks();
                 setIsAuthenticated(false);
             }
@@ -92,6 +92,7 @@ export default function Home() {
         setIsCreating(false);
         setIsDeleting(false);
         setIsModifying(false);
+        setTitleIsInvalid(false);
     }
 
     const getPriority = () => {
@@ -209,6 +210,18 @@ export default function Home() {
 
         event.preventDefault();
 
+        let invalidTitle = false;
+        let invalidDesc = false;
+
+        if (title.length === 0 || title === "") {
+            setTitleIsInvalid(true);
+            invalidTitle = true;
+        }
+
+        if (invalidTitle) {
+            return;
+        }
+
         if (isCreating) {
 
             const task: Task = {
@@ -304,16 +317,23 @@ export default function Home() {
 
     return (
     <>
-    <main className="flex-grow flex md:flex-row flex-col md:mx-12 md:mb-4 justify-evenly items-center">
-        <div className={`${isAuthenticated ? "hidden" : "flex"} w-30% min-w-[200px] h-30% bg-white flex flex-col justify-center items-center space-y-8`}>
+    <main className="flex-grow flex md:flex-row flex-col md:mx-12 md:my-4 justify-evenly items-center">
+        <div className={`${isAuthenticated ? "hidden" : "flex"} w-30% min-w-[200px] min-h-[500px] bg-white flex flex-col justify-center items-center space-y-8`}>
             <p className="text-center">Your session has timed out or we could not authenticate you. Please login again.</p>
             <button className="btn-primary p-4 min-w-[100px] w-[8vw] cursor-pointer" onClick={() => (router.push("/auth/login"))}>Login</button>
         </div>
-        <div className={`${isAuthenticated ? "flex" : "hidden"} ${isDeleting ? "blur" : ""} transition filter 300ms ease-in-out w-1/2 justify-center items-center space-x-8`}>
+        <div className={`${titleIsInvalid ? "flex" : "hidden"} z-2 justify-center items-center absolute top-0 left-0 w-[100vw] h-[100vh]`}>
+            <div className="flex flex-col justify-center items-center w-[30%] min-w-[250px] h-[30%] space-y-2 bg-white border border-px p-4">
+                <h1 className="text-center text-xl my-4">Warning</h1>
+                <p className={`${titleIsInvalid ? "block" : "hidden"} text-center`}>The title cannot be empty.</p>
+                <button className="btn-primary p-4 min-w-[100px] w-[8vw] cursor-pointer my-4" onClick={() => (resetChecks())}>Confirm</button>
+            </div>
+        </div>
+        <div className={`${isAuthenticated ? "flex" : "hidden"} ${isDeleting || titleIsInvalid ? "blur" : ""} transition filter 300ms ease-in-out w-1/2 justify-center items-center space-x-8`}>
             <FaArrowAltCircleLeft className="icon" onClick={handleDecrementClicked} />
             <form method="POST" onSubmit={handleSubmit} className="flex flex-col justify-center items-center">
                 <div
-                    className={`max-w-[300px] min-w-[300px] min-h-[450px] max-h-[450px] my-2 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white border border-px`}
+                    className={`max-w-[300px] min-w-[300px] min-h-[450px] my-4 py-4 h-full flex flex-col justify-center items-center shadow-2xl rounded-2xl bg-white border border-px`}
                     style={{boxShadow: `1px 2px 10px ${isCreating || isModifying ? 
                         "rgb(" + color.red + "," + color.green + "," + color.blue + ")" :
                             tasks.length > 0 ?
@@ -382,7 +402,7 @@ export default function Home() {
             </form>
             <FaArrowAltCircleRight className="icon" onClick={handleIncrementClicked} />
         </div>
-        <div className={`${isAuthenticated ? "flex md:flex-col flex-row my-8 md:my-0 md:space-y-4 space-x-8 md:space-x-0" : "hidden"} ${isDeleting ? "blur" : ""} transition filter 300ms ease-in-out w-1/3 flex-col justify-center items-center`}>
+        <div className={`${isAuthenticated ? "flex md:flex-col flex-row my-8 md:my-0 md:space-y-4 space-x-8 md:space-x-0" : "hidden"} ${isDeleting || titleIsInvalid ? "blur" : ""} transition filter 300ms ease-in-out w-1/3 flex-col justify-center items-center`}>
             <button onClick={handleCreateClicked} className="btn-secondary w-[13vw] min-w-[80px] cursor-pointer">Create</button>
             <button onClick={handleDeleteClicked} className="btn-secondary w-[13vw] min-w-[80px] cursor-pointer">Delete</button>
             <button onClick={handleModifyClicked} className="btn-secondary w-[13vw] min-w-[80px] cursor-pointer">Modify</button>

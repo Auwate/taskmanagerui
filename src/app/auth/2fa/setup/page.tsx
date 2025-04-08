@@ -92,11 +92,11 @@ export default function Home() {
                 <div className="w-1/2 border mt-2 border-px border-[#b3b3b3]"></div>
                 <h1 className="text-center text-sm">Please enable 2FA by scanning this QR code and entering your one time code.</h1>
                 <input
-                    id="username"
-                    name="username"
+                    id="totp"
+                    name="totp"
                     className="block border border-px rounded-xl px-3 pb-0 h-[50px]"
                     placeholder=" "
-                    aria-label="username"
+                    aria-label="totp"
                     onChange={(event) => setTotpCode(event.target.value)}
                 ></input>
                 <button type="submit" className="btn-primary cursor-pointer min-w-3/4">Submit</button>
